@@ -18,7 +18,7 @@ def minOperations(n):
     operations needed to result in exactly n H characters
     in the file.
     """
-    if n <= 0:
+    if n <= 1:
         return 0
 
     """
@@ -33,18 +33,12 @@ def minOperations(n):
     dp[1] = 0
 
     for i in range(2, n + 1):
-        """
-        Check if i is a factor of n
-        """
-        if n % i == 0:
-            """
-            If i is a factor, copy and paste i times
-            """
-            dp[i] = min(dp[i], dp[i // 2] + 2)
 
-            """
-            If n/i is a factor, copy all and paste n/i times
-            """
-            dp[n // i] = min(dp[n // i], dp[i] + n // i)
+        for j in range(2, int(i**0.5) + 1):
+            if i % j == 0:
+                dp[i] = min(dp[i], dp[j] + i // j, dp[i // j] + j)
 
-    return dp[n] if dp[n] != float('inf') else 0
+        if dp[i] == float('inf'):
+            dp[i] = i
+
+    return dp[n]
