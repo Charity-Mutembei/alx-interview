@@ -30,35 +30,39 @@ def is_safe(board, row, col, n):
     return True
 
 
-def solve_nqueens_util(board, col, n):
+def solve_nqueens_util(board, col, n, solutions):
     """
-    solve queens
+    solve function
     """
     if col == n:
-        print_solution(board)
+        solutions.append([[i, j] for i,
+                          row in enumerate(board) for j,
+                          val in enumerate(row) if val == 1])
         return
 
     for i in range(n):
         if is_safe(board, i, col, n):
             board[i][col] = 1
-            solve_nqueens_util(board, col + 1, n)
+            solve_nqueens_util(board, col + 1, n, solutions)
             board[i][col] = 0
 
 
 def solve_nqueens(n):
     """
-    secondd
+    solve function
     """
     board = [[0 for _ in range(n)] for _ in range(n)]
-    solve_nqueens_util(board, 0, n)
+    solutions = []
+    solve_nqueens_util(board, 0, n, solutions)
+    return solutions
 
 
-def print_solution(board):
+def print_solutions(solutions):
     """
-    print
+    print function
     """
-    for row in board:
-        print(" ".join(map(str, row)))
+    for solution in solutions:
+        print(solution)
 
 
 if __name__ == "__main__":
@@ -76,4 +80,5 @@ if __name__ == "__main__":
         print("N must be at least 4")
         sys.exit(1)
 
-    solve_nqueens(N)
+    solutions = solve_nqueens(N)
+    print_solutions(solutions)
