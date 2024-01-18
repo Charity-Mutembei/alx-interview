@@ -1,49 +1,36 @@
 #!/usr/bin/node
-"""
-Write a script that prints all
-characters of a Star Wars movies
-"""
-import requests
-import sys
+const request = require('request');
+//declare the api link here
+const myInteger = parseInt(process.argv[2], 10);
 
-def get_characters(movie_id):
-    "SWAPI base URL"
-    base_url = "https://swapi-api.alx-tools.com/api/"
+if (isNaN(myInteger)){
+  //check if integer
+  // console.error('Please input an integer in the command line argument');
+  console.log('myInteger:', myInteger);
+  process.exit(1);
+  //meaning not a sucsess
+}
 
-    "Endpoint for films"
-    films_endpoint = f"{base_url}films/{movie_id}/"
+//Append the integer taken into the URL argument
+// const urlWithQuery = `${apiUrl}?myInteger=${myInteger}`;
+const apiUrl = `https://swapi-api.alx-tools.com/api/films/${myInteger}`;
 
-    try:
-        "Get information about the movie"
-        response = requests.get(films_endpoint)
-        response.raise_for_status()
-        movie_data = response.json()
+//then make the request
+request(apiUrl, (error, response, body) => {
+  if (error) {
+    console.error('Request error:', error);
+    return;
+  }
 
-        "Extract character URLs from the movie data"
-        character_urls = movie_data["characters"]
+  // Check if the request was successful (status code 200-299)
+  if (response.statusCode < 200 || response.statusCode >= 300) {
+    console.error(`HTTP error! Status: ${response.statusCode}`);
+    return;
+  }
 
-        "Fetch character names using the character URLs"
-        for character_url in character_urls:
-            character_response = requests.get(character_url)
-            character_response.raise_for_status()
-            character_data = character_response.json()
-            print(character_data["name"])
+  // Parse the JSON response
+  const data = JSON.parse(body);
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <Movie_ID>")
-        sys.exit(1)
-
-    movie_id = sys.argv[1]
-
-    try:
-        movie_id = int(movie_id)
-    except ValueError:
-        print("Error: Movie ID must be an integer.")
-        sys.exit(1)
-
-    get_characters(movie_id)
-
+  // Handle the data from the API
+  console.log(data);
+});
