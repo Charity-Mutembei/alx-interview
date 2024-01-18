@@ -32,5 +32,36 @@ request(apiUrl, (error, response, body) => {
   const data = JSON.parse(body);
 
   // Handle the data from the API
-  console.log(data);
+  // console.log(data.characters);
+  links = data.characters;
+
+  //get the links here leading to the characters
+  // console.log(links);
+
+  //access the links
+  links.forEach(element => {
+    // console.log(element);   
+    newApiUrl = element;
+    
+    //request the url
+    request(newApiUrl, (error, response, body) => {
+      if (error) {
+        console.error('Request error:', error);
+        return;
+      }
+
+      //step II
+      // Check if the request was successful (status code 200-299)
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        console.error(`HTTP error! Status: ${response.statusCode}`);
+        return;
+      }
+
+      // Parse the JSON response
+      const data2 = JSON.parse(body);
+      console.log(data2.name);
+
+    });
+
+  });
 });
