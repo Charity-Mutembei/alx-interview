@@ -1,0 +1,1 @@
+For the 0X04.UTF-8 Validation project applying knowledge in bitwise operations, understandinf of the UTF-8 encoding schemes, and Python programming skills to validate whether a given a dataset represents a vliad UTF-8 encoding.
