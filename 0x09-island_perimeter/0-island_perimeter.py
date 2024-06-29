@@ -5,26 +5,27 @@ Module for the class Square
 
 
 def island_perimeter(grid):
+    """
+    new function
+    """
+    if not grid:
+        return 0
+
+    rows = len(grid)
+    cols = len(grid[0])
     perimeter = 0
-    rows, cols = len(grid), len(grid[0])
 
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == 1:  # Found land
-                # Check its 4 neighbors
-                for dr, dc in directions:
-                    nr, nc = r + dr, c + dc
-                    if nr < 0:
-                        perimeter += 1
-                    if nr >= rows:
-                        perimeter += 1
-                    if nc < 0:
-                        perimeter += 1
-                    if nc >= cols:
-                        perimeter += 1
-                    if grid[nr][nc] == 0:
-                        perimeter += 1
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == 1:
+                # Check all four directions
+                if i == 0 or grid[i-1][j] == 0:  # Up
+                    perimeter += 1
+                if i == rows - 1 or grid[i+1][j] == 0:  # Down
+                    perimeter += 1
+                if j == 0 or grid[i][j-1] == 0:  # Left
+                    perimeter += 1
+                if j == cols - 1 or grid[i][j+1] == 0:  # Right
+                    perimeter += 1
 
     return perimeter
