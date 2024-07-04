@@ -7,6 +7,9 @@ trial question
 
 
 def isWinner(x, nums):
+    if not nums or x < 1:
+        return None
+
     max_n = max(nums)
 
     def sieve_of_eratosthenes(limit):
